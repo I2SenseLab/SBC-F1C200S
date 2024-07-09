@@ -1,0 +1,26 @@
+Comment,RefDes,Pattern,JLCPCB
+1u,"C1, C2, C3",CAP_0603_M,C15849
+0.1u,C4,CAP_0603_N,C694145
+8pf,"C5, C7",CAP_0805_M,C296108
+1u,C6,CAP_0805_M,C377011
+https://datasheet.lcsc.com/lcsc/1810101813_Everlight-Elec-19-213-Y2C-CQ2R2L-3T-CY_C72038.pdf,"D1, D2",DIO_0603_L,C72038
+http://datasheets.diptrace.com/con_headers/xPxCxxxLFBN-RC_10492-E.pdf,J1,RHDRV22W80P254_22X1_5638X250H875_AP1,
+http://datasheets.diptrace.com/con_headers/xPxCxxxLFBN-RC_10492-E.pdf,"J2, J6, J9",RHDRV4W80P254_4X1_1066X250H875_AP1,
+https://datasheet.lcsc.com/lcsc/1811131825_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.pdf,J3,C165948,C165948
+http://datasheets.diptrace.com/con_headers/xPxCxxxLFBN-RC_10492-E.pdf,"J4, J8, J10, J11",RHDRV6W80P254_6X1_1574X250H875_AP1,
+https://jlcpcb.com/partdetail/Hooya-PJ_320_OS/C2939180,J5,PJ-320,C2939180
+http://datasheets.diptrace.com/con_headers/xPxCxxxLFBN-RC_10492-E.pdf,J7,RHDRV13W80P254_13X1_3352X250H875_AP1,
+0,"R1, R2, R5",RES_0603_M,
+5k1,"R3, R4",RES_0402_N,
+22k,"R8, R15, R16",RES_0402_N,
+300,"R6, R7",RES_0805_M,
+56k,R9,RES_0805_N,
+46k,R10,RES_0805_N,
+40k,R11,RES_0805_N,
+10k,"R12, R13, R14",RES_0805_N,
+,S1,C720477,C720477
+https://jlcpcb.com/partdetail/gswitch-GT_TF003_H018501/C5155563,U1,GT-TF003-H0185-01,C5155563
+F1C200S,U2,QFN89P40_1000X1000X90L40X20T674M,
+https://jlcpcb.com/partdetail/AnalogDevices-ADP323ACPZR7/C143893,U3,QFN17P50_300X300X80L40X24T160N,C143893
+https://jlcpcb.com/partdetail/TexasInstruments-TLV73311PDQNR/C2863780,U4,X2SON,C2863780
+file:///C:/Users/devin/Downloads/X322524MMB4SI.pdf,Y1,X322524MMB4SI,C70583
