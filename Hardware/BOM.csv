@@ -1,4 +1,4 @@
-Comment,RefDes,Pattern,JLCPCB
+busComment,RefDes,Pattern,JLCPCB
 1u,"C1, C2, C3",CAP_0603_M,C15849
 0.1u,C4,CAP_0603_N,C694145
 8pf,"C5, C7",CAP_0805_M,C296108
