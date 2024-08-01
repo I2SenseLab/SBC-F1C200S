@@ -1,6 +1,0 @@
-[submodule "u-boot"]
-	path = u-boot
-	url = https://github.com/u-boot/u-boot
-[submodule "linux-sunxi"]
-	path = linux-sunxi
-	url = https://github.com/linux-sunxi/linux-sunxi
