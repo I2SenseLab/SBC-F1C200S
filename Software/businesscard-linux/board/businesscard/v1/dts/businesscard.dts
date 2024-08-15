@@ -68,13 +68,13 @@
 
             partition@0 {
                 label = "u-boot";
-                reg = <0x000000 0x40000>;
+                reg = <0x000000 0x50000>; //Update to 320kb
                 //read-only;
             };
 
-            partition@110000 {
+            partition@50000 { //Updating offset to start at the end of u-boot
                 label = "rootubi";
-                reg = <0x40000 0x7C0000>;
+                reg = <0x50000 0x7C0000>; //Adjusted Start to start at the end of u-boot
                 //read-only;
             };
         };
