@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR X11)
 /*
  * Copyright 2019 George Hilliard <thirtythreeforty@gmail.com>
+ * Copyright 2024 Devin Atkin <devinatkin@gmail.com>
  */
 
 /dts-v1/;
@@ -9,8 +10,8 @@
 #include <dt-bindings/gpio/gpio.h>
 
 / {
-	model = "George Hilliard's business card";
-	compatible = "licheepi,licheepi-nano", "allwinner,suniv-f1c100s",
+	model = "Simple Single Board Computer";
+	compatible = "allwinner,suniv-f1c100s",
 		     "allwinner,suniv";
 
 	aliases {
@@ -45,7 +46,7 @@
 
 &pio {
 	led_pins: led_pins {
-		pins = "PD7";
+		pins = "PE12";
 		function = "gpio_out";
 	};
 };
@@ -103,6 +104,6 @@
 };
 
 &usbphy {
-	usb0_id_det-gpio = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE2 */
+	usb0_id_det-gpio = <&pio 4 11 GPIO_ACTIVE_HIGH>; /* PE11 */
 	status = "okay";
 };
