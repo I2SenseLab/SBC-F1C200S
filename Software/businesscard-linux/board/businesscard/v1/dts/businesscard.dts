@@ -72,7 +72,7 @@
                 //read-only;
             };
 
-            partition@50000 { //Updating offset to start at the end of u-boot
+            partition@110000 { //Updating offset to start at the end of u-boot
                 label = "rootubi";
                 reg = <0x50000 0x7C0000>; //Adjusted Start to start at the end of u-boot
                 //read-only;
