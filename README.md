@@ -1,152 +1,60 @@
-# sunxi-tools
-[![License](http://img.shields.io/badge/License-GPL-green.svg)](LICENSE.md)
-[![Build Status](https://travis-ci.org/linux-sunxi/sunxi-tools.svg?branch=master)](https://travis-ci.org/linux-sunxi/sunxi-tools)
-[![Releases](https://img.shields.io/github/release/linux-sunxi/sunxi-tools.svg)](https://github.com/linux-sunxi/sunxi-tools/releases)
-[![Commits](https://img.shields.io/github/commits-since/linux-sunxi/sunxi-tools/v1.4.svg)](https://github.com/linux-sunxi/sunxi-tools/compare/v1.4...master)
+# F1C100 Business Card
 
-Copyright (C) 2012  Alejandro Mery <amery@geeks.cl>
-<br>For a full list of contributors, see
-[this link](https://github.com/linux-sunxi/sunxi-tools/contributors)
-or use the command `git shortlog -se --no-merges`.
+A simple business-card sized system based on an F1C100 SoC featuring:
+* F1C100 with 32MB RAM
+* 32MB Flash Storage
+* 128x160xRGB LCD
+* 7 Push Buttons
+* USB-C Host and OTG
 
-Command line utilities to work with devices based on [Allwinner SoC]s:
-sun4i, sun5i, ... - that's why the 'x' in the package name.
+## Design
+The board was build by JLCPCB and the project is available [here](https://oshwlab.com/tommy_tom2000/f1c100-business-card)
 
-### sunxi-fexc
-`.fex` file (de)compiler
+## Usage
+The board has an unpopulated header for the SPI0 port which can be used to write to the flash chip directly. The F1C100 chip also includes a USB stack and SPI Flash driver in the internal bootloader in "FEL" mode, which can be used to write to the first 16MB of the chip.
+* To force the device in to FEL mode, first bridge the CS pin with 3v3 to pull the line high and make the F1c100 footloader think there is no boot device.
+* Plug the board in to a PC via USB. The LCD should light up white, and the device should enumerate as a USB device.
+* Remove the bridge from chip select (CS) pin.
+* Follow the instructions to get **sunxi-tools** for your OS [here](https://linux-sunxi.org/FEL).
+* Build the Buildroot external tree:
+```
+BR2_EXTERNAL=../F1C100-Business-Card make f1c100-business-card_defconfig
+```
+* Use **sunxi-fel** to write the *flash.bin* file to the flash drive:
+```
+./sunxi-fel -p spiflash-write 0 flash.bin
+```
+* Reboot the device by either bridging the *reset* jumper, or clycling power.
 
-	Usage: ./sunxi-fexc [-vq] [-I <infmt>] [-O <outfmt>] [<input> [<output>]]
+## TODO and Issues
+* USB port doesn't seem to register new devices. Works in FEL mode.
+* The **sunxi-fel** program is unable to write to the top 16MiB of the flash, and so the rootfs is effectively limited to 16MB. However, once the system if flashed it can be resized within Linux.
+* Convert to a UBI image and file system in the future.
+* Push Button GPIO Port Numbers:
+  
+| BUTTON | PIN     | gpiochip0 number |
+|--------|---------|------------------|
+| RIGHT | PE3  | 131 |
+| UP    | PE4  | 132 |
+| DOWN  | PE5  | 133 |
+| LEFT  | PE6  | 134 |
+| A     | PE12 | 140 |
+| B     | PE11 | 139 |
+| C     | PD15 | 111 |
+  
+You can read the GPIO value using the GPIO export system:
+```
+echo 131 > /sys/class/gpio/export
+cat /sys/class/gpio/gpio131/value
+```
+OR by using GPIO tools:
+```
+gpioget gpiochip0 131
+```
 
-	infmt:  fex, bin  (default:fex)
-	outfmt: fex, bin  (default:bin)
-
-### bin2fex
-compatibility shortcut to call `sunxi-fexc` to decompile a _script.bin_
-blob back into `.fex` format used by Allwinner's SDK to configure
-the boards.
-
-### fex2bin
-compatiblity shortcut to call `sunxi-fexc` to compile a `.fex` file
-into the binary form used by the legacy 3.4 kernel ("linux-sunxi").
-
-### sunxi-fel
-script interface for USB communication with the FEL handler built in to
-the CPU. You usually activate [FEL mode] by pushing the _uboot_ / _recovery_
-button at poweron, or by having your device "fail over" to FEL when no other
-boot option is available. See http://linux-sunxi.org/FEL/USBBoot for a detailed
-usage guide.
-
-When called with no arguments, _sunxi-fel_ will display a short usage summary.
-
-_Note:_ Unless you select a specific device using the `--dev` or `--sid`
-options, the tool will access the first Allwinner device (in FEL mode) that it
-finds. You can print a list of all FEL devices currently connected/detected
-with `./sunxi-fel --list --verbose`.
-
-### fel-gpio
-Simple wrapper (script) around `sunxi-pio` and `sunxi-fel`
-to allow GPIO manipulations via FEL
-
-### fel-sdboot
-ARM native sdcard bootloader forcing the device into FEL mode
-
-### uart0-helloworld-sdboot
-ARM native sdcard bootloader, which is only printing a short "hello"
-message to the UART0 serial console. Because it relies on runtime
-SoC type detection, this single image is bootable on a wide range of
-Allwinner devices and can be used for testing. Additionally, it may
-serve as a template/example for developing simple bare metal code
-(LED blinking and other similar GPIO related things).
-
-### sunxi-pio
-Manipulate PIO registers/dumps
-
-### sunxi-nand-part
-Tool for manipulating Allwinner NAND partition tables
-
-### sunxi-nand-image-builder
-Tool used to create raw NAND images (including boot0 images)
-
-### jtag-loop.sunxi
-ARM native boot helper to force the SD port into JTAG and then stop,
-to ease debugging of bootloaders.
-
-### sunxi-bootinfo
-Dump information from Allwinner boot files (_boot0_ / _boot1_)
-
-	--type=sd	include SD boot info
-	--type=nand	include NAND boot info (not implemented)
-
-### phoenix_info
-gives information about a phoenix image created by the
-phoenixcard utility and optionally extracts the embedded boot
-code & firmware file from their hidden partitions.
-
-### sunxi-meminfo
-Tool for reading DRAM settings from registers. Compiled as a
-static binary for use on android and other OSes.
-To build this, get a toolchain and run:
-
-	make CROSS_COMPILE=arm-linux-gnueabihf- sunxi-meminfo
-
-### sunxi-script_extractor
-A simple tool, which can be executed on a rooted Android device
-to dump the _script.bin_ blob from RAM via reading _/dev/mem_.
-To build this, get a toolchain and run:
-
-	make CROSS_COMPILE=arm-linux-gnueabihf- sunxi-script_extractor
----
-
-## Building
-
-Compilation requires the development version of *libusb-1.0* (include header
-and library) to be installed for `sunxi-fel`. Unless you explicitly pass
-*LIBUSB_CFLAGS* and *LIBUSB_LIBS* to the make utility, `pkg-config` is also
-needed.
-
-Available build targets:
-
-* `make tools`
-builds tools that are useful on the host. This is what most people will want,
-and our default target (when simply using `make`).
-
-* `make target-tools`
-builds tools that are intended for the target (Allwinner SoC), using a
-cross-compiler. The Makefile will try to auto-detect a suitable toolchain
-prefix, and falls back to `arm-none-eabi-` otherwise.
-If needed, you may override this by explicitly setting *CROSS_COMPILE*.
-<br>_Hint:_ When compiling 'natively' on the target platform you may
-simply use an empty toolchain prefix here (`make target-tools CROSS_COMPILE=`
-or `make all CROSS_COMPILE=`).
-
-* `make all`
-builds both *tools* and *target-tools*.
-
-* `make install-tools`
-builds *tools* and then copies/installs them to a filesystem location. The
-destination is affected by settings for `DESTDIR`, `PREFIX` and possibly
-`BINDIR`. For details, please refer to the *Makefile*.
-You may use `make install` as a shortcut for this.
-
-* `make install-target-tools`
-builds *target-tools* and then copies/installs them to a filesystem location
-selected by `DESTDIR`, `PREFIX` and possibly `BINDIR` - see `make install-tools`
-above.
-
-* `make install-all`
-builds and installs both *tools* and *target-tools*.
-
-* `make misc`
-builds miscellaneous (host) utilities that are not part of our 'standard' suite.
-Currently this means `phoenix_info` and `sunxi-nand-image-builder`.
-
-* `make install-misc`
-builds *misc* and installs the resulting binaries.
-
-## License
-This software is licensed under the terms of GPLv2+ as defined by the
-Free Software Foundation, details can be read in the [LICENSE.md](LICENSE.md)
-file.
-
-[allwinner soc]: http://linux-sunxi.org/Allwinner_SoC_Family
-[fel mode]: http://linux-sunxi.org/FEL
+## Asknowledgments
+This project is based heavily on the work of others; I would like to acknowledge these project in particular:
+* https://github.com/thirtythreeforty/businesscard-linux/tree/master
+* https://github.com/florpor/licheepi-nano/tree/master
+* [F1C100 Datasheet](https://whycan.com/files/members/3/F1C100s_Datasheet_V1_0.pdf)
+* [Lichee-Pi Nano](https://wiki.sipeed.com/hardware/en/lichee/Nano/Nano.html) 
