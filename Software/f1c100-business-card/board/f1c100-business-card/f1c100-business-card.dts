@@ -1,0 +1,127 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR X11)
+/*
+ * Copyright 2018 Icenowy Zheng <icenowy@aosc.io>
+ */
+
+/dts-v1/;
+#include "f1c100-business-card.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	model = "BasicCode F1C100 Business Card";
+	compatible = "allwinner,suniv-f1c100s";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	reg_vcc3v3: vcc3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+};
+
+/*
+ * Pin Definitions
+ */
+&pio {			
+	spi1_pc_pins: spi1-pc-pins {
+		pins = "PE7", "PE8", "PE9", "PE10";
+		function = "spi1";
+	};
+};
+
+/*
+&be0 {
+	status = "okay";
+};
+
+&de {
+	status = "okay";
+};
+*/
+
+&spi0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi0_pins_a>;
+	status = "okay";
+
+	flash@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "xtx,xt25f256", "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <40000000>;
+
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			partition@0 {
+				label = "u-boot";
+				reg = <0x000000 0x100000>;
+				read-only;
+			};
+
+			partition@1 {
+				label = "dtb";
+				reg = <0x100000 0x10000>;
+				read-only;
+			};
+
+			partition@2 {
+				label = "kernel";
+				reg = <0x110000 0x4F0000>;
+				read-only;
+			};
+
+			partition@3 {
+				label = "rootfs";
+				reg = <0x600000 0x1A00000>;
+			};
+		};
+	};
+};
+
+&spi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pc_pins>;
+	status = "okay";
+
+	panel: panel@0{
+		compatible = "jianda,jd-t18003-t01", "sitronix,st7735r";
+		reg = <0>;
+		spi-max-frequency = <32000000>;
+		dc-gpios = <&pio 3 16 GPIO_ACTIVE_HIGH>; //PD16
+		reset-gpios = <&pio 3 17 GPIO_ACTIVE_HIGH>; //PD17
+		rotation = <270>;
+	};
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pe_pins>;
+	status = "okay";
+};
+
+&otg_sram {
+	status = "okay";
+};
+
+&usb_otg {
+	dr_mode = "host";
+	status = "okay";
+};
+
+&usbphy {
+	usb0_id_det = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE3 */
+	status = "okay";
+};
