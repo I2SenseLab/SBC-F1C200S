@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR X11)
 /*
  * Copyright 2018 Icenowy Zheng <icenowy@aosc.io>
+ * Modified by: I2Sense Lab <dmatkin@ucalgary.ca>
  */
 
 /dts-v1/;
@@ -8,7 +9,7 @@
 #include <dt-bindings/gpio/gpio.h>
 
 / {
-	model = "BasicCode F1C100 Business Card";
+	model = "I2Sense Simple SBC";
 	compatible = "allwinner,suniv-f1c100s";
 
 	aliases {
@@ -25,6 +26,24 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		heartbeat_led: led-0 {
+			label = "heartbeat";
+			gpios = <&pio 4 11 GPIO_ACTIVE_HIGH>; //PE11
+			linux,default-trigger = "heartbeat";
+			default-state = "off";
+		};
+
+		cpu_led: led-1 {
+			label = "cpu";
+			gpios = <&pio 4 12 GPIO_ACTIVE_HIGH>; //PE12
+			linux,default-trigger = "cpu";
+			default-state = "off";
+		};
 	};
 };
 
