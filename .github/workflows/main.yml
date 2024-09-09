@@ -1,0 +1,56 @@
+name: Build flash.bin
+
+on:
+  push:
+    branches:
+      - main  # Run when code is pushed to main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Specify the environment to run the build
+    
+    steps:
+    # Checkout the repository code
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: true  # Initialize submodules
+
+    # Initialize submodules if needed
+    - name: Initialize submodules
+      run: git submodule update --init --recursive
+
+    # Install build dependencies
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc-arm-linux-gnueabi u-boot-tools \
+                               python3-pip python3-setuptools python3-wheel
+
+    # Install pip dependencies
+    - name: Install pip dependencies
+      run: |
+        pip install pylibfdt
+
+    # Configure the build
+    - name: Configure buildroot
+      working-directory: Software/buildroot
+      run: |
+        BR2_EXTERNAL=../f1c100-business-card make f1c100-business-card_defconfig
+
+    # Build the flash.bin
+    - name: Build flash.bin
+      working-directory: Software/buildroot
+      run: |
+        make clean
+        make
+
+    # Archive the built flash.bin file
+    - name: Upload flash.bin
+      uses: actions/upload-artifact@v4
+      with:
+        name: flash.bin
+        path: Software/buildroot/output/images/flash.bin  # Replace with actual path to flash.bin
