@@ -40,7 +40,7 @@
 
 		cpu_led: led-1 {
 			label = "cpu";
-			gpios = <&pio 4 12 GPIO_ACTIVE_HIGH>; //PE12
+			gpios = <&pio 3 2 GPIO_ACTIVE_HIGH>; //PD2
 			linux,default-trigger = "cpu";
 			default-state = "off";
 		};
