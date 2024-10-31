@@ -33,18 +33,26 @@
 
 		heartbeat_led: led-0 {
 			label = "heartbeat";
-			gpios = <&pio 3 1 GPIO_ACTIVE_HIGH>; //PD1
+			gpios = <&pio 3 1 GPIO_ACTIVE_HIGH>; // PD1
 			linux,default-trigger = "heartbeat";
 			default-state = "off";
 		};
 
 		cpu_led: led-1 {
 			label = "cpu";
-			gpios = <&pio 3 2 GPIO_ACTIVE_HIGH>; //PD2
+			gpios = <&pio 3 2 GPIO_ACTIVE_HIGH>; // PD2
 			linux,default-trigger = "cpu";
 			default-state = "off";
 		};
+
+		activity_led: led-2 {
+			label = "activity";
+			gpios = <&pio 3 3 GPIO_ACTIVE_HIGH>; // PD3
+			linux,default-trigger = "activity";
+			default-state = "off";
+		};
 	};
+
 };
 
 /*
