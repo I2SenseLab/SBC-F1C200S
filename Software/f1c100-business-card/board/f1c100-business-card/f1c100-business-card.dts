@@ -33,7 +33,7 @@
 
 		heartbeat_led: led-0 {
 			label = "heartbeat";
-			gpios = <&pio 4 11 GPIO_ACTIVE_HIGH>; //PE11
+			gpios = <&pio 3 1 GPIO_ACTIVE_HIGH>; //PD1
 			linux,default-trigger = "heartbeat";
 			default-state = "off";
 		};
