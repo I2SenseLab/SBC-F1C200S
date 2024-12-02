@@ -17,7 +17,7 @@
 	};
 
 	chosen {
-		stdout-path = "serial0:115200n8";
+		stdout-path = "serial0:9600n8";
 	};
 
 	reg_vcc3v3: vcc3v3 {
