@@ -8,3 +8,5 @@ sunxi-pio
 version.h
 *.o
 *.swp
+.vscode
+build

@@ -2,3 +2,8 @@
 	path = Software/buildroot
 	url = https://gitlab.com/buildroot.org/buildroot.git
 	ignore = all
+
+[submodule "pico-sdk"]
+	path = Software/pico-uart-bridge/pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk.git
+	ignore = all

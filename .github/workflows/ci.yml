@@ -1,8 +1,9 @@
-name: CI
+name: CI Pico Bridge
 
 on:
-  - push
-  - pull_request
+  push:
+    paths:
+      - 'Software/pico-uart-bridge/**'
 
 jobs:
   CI:
@@ -22,12 +23,13 @@ jobs:
 
       - name: 'Configure'
         run: |
+          cd Software/pico-uart-bridge
           mkdir -p build
           cmake -B build
 
       - name: 'Build'
         run: |
-          make -C build
+          make -C Software/pico-uart-bridge/build
 
       - name: 'Upload binary'
         uses: actions/upload-artifact@v4
