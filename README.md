@@ -5,7 +5,7 @@ git submodule update --init
 
 To Grab the device defconfig
 ```
-BR2_EXTERNAL=../simple_sbc make f1c100-business-card_defconfig
+BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
 ```
 
 To make modifications to the config run
