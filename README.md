@@ -19,6 +19,11 @@ make clean
 make
 ```
 
+To make on WSL with a slightly wonky path try 
+```
+PATH=$(grep -v '[[:space:]]'<<<"${PATH//:/$'\n'}"|paste -sd:) make
+```
+
 ```
 To save changes to the defconfig
 ```
