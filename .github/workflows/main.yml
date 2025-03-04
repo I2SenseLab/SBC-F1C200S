@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, health]
+    runs-on: ubuntu-latest  # Specify the environment to run the build
     
     steps:
     # Checkout the repository code
