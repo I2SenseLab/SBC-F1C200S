@@ -47,7 +47,7 @@ jobs:
       working-directory: Software/buildroot
       run: |
         make clean
-        make
+        make -j$(nproc)
 
     # Archive the built flash.bin file
     - name: Upload flash.bin
