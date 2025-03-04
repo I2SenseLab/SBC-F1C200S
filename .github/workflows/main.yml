@@ -33,7 +33,8 @@ jobs:
     # Install pip dependencies
     - name: Install pip dependencies
       run: |
-        pip install pylibfdt
+        python3 -m pip install --upgrade pip
+        python3 -m pip install pylibfdt
 
     # Configure the build
     - name: Configure buildroot
