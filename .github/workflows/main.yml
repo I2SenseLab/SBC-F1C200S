@@ -41,17 +41,15 @@ jobs:
     - name: Build kernel only
       working-directory: Software/buildroot
       run: |
-        make linux-source
+        make linux-extract
         make linux-patch
         make linux-configure
-        make linux-compile
+        make linux-build
 
-    # 2) Run bloat-o-meter on the uncompressed kernel
-    - name: Analyze kernel size (bloat-o-meter)
+    - name: Analyze kernel size
       working-directory: Software/buildroot
       run: |
         cd output/build/linux-*
-        # bloat-o-meter is in scripts/ if you have the full kernel source
         scripts/bloat-o-meter vmlinux > /tmp/bloat_report.txt
         cat /tmp/bloat_report.txt
 
