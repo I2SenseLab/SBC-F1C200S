@@ -32,44 +32,9 @@ jobs:
     #     python3 -m pip install --upgrade pip
     #     python3 -m pip install pylibfdt
 
-
     - name: Configure buildroot
       working-directory: Software/buildroot
       run: BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
-
-    # 1) Build the kernel only (so we have vmlinux)
-    - name: Build kernel only
-      working-directory: Software/buildroot
-      run: |
-        make clean
-        make linux-extract
-        make linux-patch
-        make linux-configure
-        make linux-build
-
-    - name: Analyze kernel size with nm
-      working-directory: Software/buildroot
-      run: |
-        # 1) cd into the Buildroot 'output/build' dir
-        cd output/build
-        
-        # 2) If you have multiple linux-6.6.* dirs, pick the first
-        KERNEL_DIR="$(ls -d linux-6.6.* | head -n 1)"
-        echo "Analyzing kernel in: $KERNEL_DIR"
-        cd "$KERNEL_DIR"
-        
-        # 3) Use nm to show symbols in descending order by size
-        nm --print-size --size-sort -r vmlinux > /tmp/nm_report.txt
-        
-        # 4) Print the nm report to the logs
-        echo "=== nm Symbol Size Report (largest first) ==="
-        cat /tmp/nm_report.txt
-      
-    - name: Upload nm report
-      uses: actions/upload-artifact@v4
-      with:
-        name: nm-report
-        path: /tmp/nm_report.txt
 
     # 3) Finally do the full build (including final packaging into flash.bin)
     - name: Build flash.bin
