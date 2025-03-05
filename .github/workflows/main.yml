@@ -43,6 +43,47 @@ jobs:
         make clean
         make -j"$(nproc)"
 
+    - name: Show Partitioned Image Sizes
+      run: |
+        echo "Checking partition sizes..."
+    
+        # U-Boot size
+        if [ -f "output/images/u-boot-sunxi-with-spl.bin" ]; then
+          echo "U-Boot size:"
+          ls -lh output/images/u-boot-sunxi-with-spl.bin
+          stat output/images/u-boot-sunxi-with-spl.bin
+        else
+          echo "U-Boot binary not found!"
+        fi
+    
+        # Device Tree Blob (DTB) size
+        if [ -f "output/images/f1c200s_simple_sbc.dtb" ]; then
+          echo "DTB size:"
+          ls -lh output/images/f1c200s_simple_sbc.dtb
+          stat output/images/f1c200s_simple_sbc.dtb
+        else
+          echo "DTB file not found!"
+        fi
+    
+        # Kernel (zImage) size
+        if [ -f "output/images/zImage" ]; then
+          echo "Kernel zImage size:"
+          ls -lh output/images/zImage
+          stat output/images/zImage
+        else
+          echo "Kernel zImage not found!"
+        fi
+    
+        # Root Filesystem (rootfs.jffs2) size
+        if [ -f "output/images/rootfs.jffs2" ]; then
+          echo "Root filesystem (rootfs.jffs2) size:"
+          ls -lh output/images/rootfs.jffs2
+          stat output/images/rootfs.jffs2
+        else
+          echo "Root filesystem image not found!"
+        fi
+      
+
     - name: Upload flash.bin
       uses: actions/upload-artifact@v4
       with:
