@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64] # Specify the environment to run the build
+    runs-on: [self-hosted, Linux, X64 ] # Specify the environment to run the build
     
     steps:
     # Checkout the repository code
