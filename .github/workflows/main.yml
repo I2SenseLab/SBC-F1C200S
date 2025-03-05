@@ -30,11 +30,11 @@ jobs:
         sudo apt-get install -y build-essential gcc-arm-linux-gnueabi u-boot-tools \
                                python3-pip python3-setuptools python3-wheel
 
-    # Install pip dependencies
-    - name: Install pip dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install pylibfdt
+    # Install pip dependencies, not needed any more
+    # - name: Install pip dependencies
+    #   run: |
+    #     python3 -m pip install --upgrade pip
+    #     python3 -m pip install pylibfdt
 
     # Configure the build
     - name: Configure buildroot
