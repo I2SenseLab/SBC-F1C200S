@@ -49,7 +49,13 @@ jobs:
     - name: Analyze kernel size
       working-directory: Software/buildroot
       run: |
-        cd output/build/linux-*
+        cd output/build
+        
+        # Pick the first directory matching linux-6.6.*
+        KERNEL_DIR="$(ls -d linux-6.6.* | head -n 1)"
+        echo "Analyzing kernel in: $KERNEL_DIR"
+        cd "$KERNEL_DIR"
+        
         scripts/bloat-o-meter vmlinux > /tmp/bloat_report.txt
         cat /tmp/bloat_report.txt
 
