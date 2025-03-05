@@ -3,32 +3,28 @@ name: Build flash.bin
 on:
   push:
     branches:
-      - main  # Run when code is pushed to main
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64] # Specify the environment to run the build
-    
+    runs-on: [self-hosted, Linux, X64]
+
     steps:
-    # Checkout the repository code
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        submodules: true  # Initialize submodules
+        submodules: true
 
-    # Initialize submodules if needed
     - name: Initialize submodules
       run: git submodule update --init --recursive
 
-    # Install build dependencies
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential gcc-arm-linux-gnueabi u-boot-tools \
-                               python3-pip python3-setuptools python3-wheel unzip
+        sudo apt-get install -y build-essential gcc-arm-linux-gnueabi u-boot-tools python3-pip python3-setuptools python3-wheel unzip
 
     # Install pip dependencies, not needed any more
     # - name: Install pip dependencies
@@ -36,22 +32,44 @@ jobs:
     #     python3 -m pip install --upgrade pip
     #     python3 -m pip install pylibfdt
 
-    # Configure the build
+
     - name: Configure buildroot
       working-directory: Software/buildroot
-      run: |
-        BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
+      run: BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
 
-    # Build the flash.bin
+    # 1) Build the kernel only (so we have vmlinux)
+    - name: Build kernel only
+      working-directory: Software/buildroot
+      run: |
+        make linux-source
+        make linux-patch
+        make linux-configure
+        make linux-compile
+
+    # 2) Run bloat-o-meter on the uncompressed kernel
+    - name: Analyze kernel size (bloat-o-meter)
+      working-directory: Software/buildroot
+      run: |
+        cd output/build/linux-*
+        # bloat-o-meter is in scripts/ if you have the full kernel source
+        scripts/bloat-o-meter vmlinux > /tmp/bloat_report.txt
+        cat /tmp/bloat_report.txt
+
+    - name: Upload bloat report
+      uses: actions/upload-artifact@v4
+      with:
+        name: bloat-report
+        path: /tmp/bloat_report.txt
+
+    # 3) Finally do the full build (including final packaging into flash.bin)
     - name: Build flash.bin
       working-directory: Software/buildroot
       run: |
         make clean
-        make -j$(nproc)
+        make -j"$(nproc)"
 
-    # Archive the built flash.bin file
     - name: Upload flash.bin
       uses: actions/upload-artifact@v4
       with:
         name: flash.bin
-        path: Software/buildroot/output/images/flash.bin  # Replace with actual path to flash.bin
+        path: Software/buildroot/output/images/flash.bin
