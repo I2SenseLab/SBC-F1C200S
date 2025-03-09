@@ -28,6 +28,14 @@
 		regulator-always-on;
 	};
 
+	reg_vcc5v: vcc5v {
+		compatible = "regulator-fixed";
+		regulator-name = "usb_vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		enable-active-high;
+	};
+
 leds {
 	compatible = "gpio-leds";
 
@@ -120,7 +128,6 @@ leds {
 	};
 };
 
-
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pe_pins>;
@@ -132,11 +139,11 @@ leds {
 };
 
 &usb_otg {
-	dr_mode = "host";
-	status = "okay";
+    dr_mode = "host";
+    status = "okay";
 };
 
 &usbphy {
-	usb0_id_det = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE3 */
 	status = "okay";
+	usb0_vbus-supply = <&reg_vcc5v>;
 };
