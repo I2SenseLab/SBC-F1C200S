@@ -87,8 +87,8 @@ leds {
 
 &spi0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&spi0_pins_a>;
-	status = "okay";
+    pinctrl-0 = <&spi0_pc_pins>;
+    status = "okay";
 
 	flash@0 {
 		#address-cells = <1>;
@@ -125,6 +125,24 @@ leds {
 				reg = <0x600000 0x1A00000>;
 			};
 		};
+	};
+};
+
+
+&spi1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pc_pins>;
+
+	panel: panel@0 {
+		compatible = "sitronix,st7789v";
+		reg = <0>;
+		reset-gpios = <&pio 4 11 GPIO_ACTIVE_LOW>; // PE11
+		backlight = <&pwm>;
+		power-supply = <&reg_vcc3v3>;
+		spi-max-frequency = <100000>;
+		spi-cpol;
+		spi-cpha;
 	};
 };
 
