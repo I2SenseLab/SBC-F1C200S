@@ -208,6 +208,13 @@
 				function = "spi1";
 			};
 
+			i2c1_pins: i2c1-pins {
+				pins = "PD5", "PD6";
+				function = "i2c1";
+				drive-strength = <30>;
+				bias-pull-up;
+			};
+
 			uart0_pe_pins: uart0-pe-pins {
 				pins = "PE0", "PE1";
 				function = "uart0";
