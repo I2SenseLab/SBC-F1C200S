@@ -3,54 +3,89 @@ name: Build flash.bin
 on:
   push:
     branches:
-      - main  # Run when code is pushed to main
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Specify the environment to run the build
-    
+    runs-on: [self-hosted, Linux, X64]
+
     steps:
-    # Checkout the repository code
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        submodules: true  # Initialize submodules
+        submodules: true
 
-    # Initialize submodules if needed
     - name: Initialize submodules
       run: git submodule update --init --recursive
 
-    # Install build dependencies
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential gcc-arm-linux-gnueabi u-boot-tools \
-                               python3-pip python3-setuptools python3-wheel
+        sudo apt-get install -y build-essential gcc-arm-linux-gnueabi u-boot-tools python3-pip python3-setuptools python3-wheel unzip
 
-    # Install pip dependencies
-    - name: Install pip dependencies
-      run: |
-        pip install pylibfdt
+    # Install pip dependencies, not needed any more
+    # - name: Install pip dependencies
+    #   run: |
+    #     python3 -m pip install --upgrade pip
+    #     python3 -m pip install pylibfdt
 
-    # Configure the build
     - name: Configure buildroot
       working-directory: Software/buildroot
-      run: |
-        BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
+      run: BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
 
-    # Build the flash.bin
+    # 3) Finally do the full build (including final packaging into flash.bin)
     - name: Build flash.bin
       working-directory: Software/buildroot
       run: |
         make clean
-        make
+        make -j"$(nproc)"
 
-    # Archive the built flash.bin file
+    - name: Show Partitioned Image Sizes
+      run: |
+        echo "Checking partition sizes..."
+    
+        # U-Boot size
+        if [ -f "output/images/u-boot-sunxi-with-spl.bin" ]; then
+          echo "U-Boot size:"
+          ls -lh output/images/u-boot-sunxi-with-spl.bin
+          stat output/images/u-boot-sunxi-with-spl.bin
+        else
+          echo "U-Boot binary not found!"
+        fi
+    
+        # Device Tree Blob (DTB) size
+        if [ -f "output/images/f1c200s_simple_sbc.dtb" ]; then
+          echo "DTB size:"
+          ls -lh output/images/f1c200s_simple_sbc.dtb
+          stat output/images/f1c200s_simple_sbc.dtb
+        else
+          echo "DTB file not found!"
+        fi
+    
+        # Kernel (zImage) size
+        if [ -f "output/images/zImage" ]; then
+          echo "Kernel zImage size:"
+          ls -lh output/images/zImage
+          stat output/images/zImage
+        else
+          echo "Kernel zImage not found!"
+        fi
+    
+        # Root Filesystem (rootfs.jffs2) size
+        if [ -f "output/images/rootfs.jffs2" ]; then
+          echo "Root filesystem (rootfs.jffs2) size:"
+          ls -lh output/images/rootfs.jffs2
+          stat output/images/rootfs.jffs2
+        else
+          echo "Root filesystem image not found!"
+        fi
+      
+
     - name: Upload flash.bin
       uses: actions/upload-artifact@v4
       with:
         name: flash.bin
-        path: Software/buildroot/output/images/flash.bin  # Replace with actual path to flash.bin
+        path: Software/buildroot/output/images/flash.bin

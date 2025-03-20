@@ -2,9 +2,7 @@ name: CI Pico Bridge
 
 on:
   push:
-    paths:
-      - 'Software/pico-uart-bridge/**'
-
+    
 jobs:
   CI:
     runs-on: ubuntu-22.04

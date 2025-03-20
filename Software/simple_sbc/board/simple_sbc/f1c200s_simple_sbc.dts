@@ -28,6 +28,14 @@
 		regulator-always-on;
 	};
 
+	reg_vcc5v: vcc5v {
+		compatible = "regulator-fixed";
+		regulator-name = "usb_vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		enable-active-high;
+	};
+
 leds {
 	compatible = "gpio-leds";
 
@@ -79,8 +87,8 @@ leds {
 
 &spi0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&spi0_pins_a>;
-	status = "okay";
+    pinctrl-0 = <&spi0_pc_pins>;
+    status = "okay";
 
 	flash@0 {
 		#address-cells = <1>;
@@ -121,6 +129,26 @@ leds {
 };
 
 
+&spi1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pc_pins>;
+
+	panel: panel@0 {
+		compatible = "sitronix,st7789v";
+		reg = <0>;
+		reset-gpios = <&pio 4 11 GPIO_ACTIVE_LOW>; // PE11
+		dc-gpios = <&pio 4 12 GPIO_ACTIVE_LOW>;  // PE12
+		backlight = <&pwm>;
+		power-supply = <&reg_vcc3v3>;
+		spi-max-frequency = <100000>;
+		buswidth = <8>;  /* important for fbtft */
+		rotation = <180>;
+		spi-cpol;
+		spi-cpha;
+	};
+};
+
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pe_pins>;
@@ -132,11 +160,25 @@ leds {
 };
 
 &usb_otg {
-	dr_mode = "host";
-	status = "okay";
+    dr_mode = "host";
+    status = "okay";
 };
 
 &usbphy {
-	usb0_id_det = <&pio 4 2 GPIO_ACTIVE_HIGH>; /* PE3 */
 	status = "okay";
+	usb0_vbus-supply = <&reg_vcc5v>;
+};
+
+&i2c1 {
+	status = "okay";
+    pinctrl-names = "default";
+    pinctrl-0 = <&i2c1_pins>;
+
+    max30102@57 {
+        compatible = "maxim,max30102";
+        reg = <0x57>;  // I2C address
+
+        maxim,red-led-current-microamp = <7000>;
+        maxim,ir-led-current-microamp = <7000>;
+    };   
 };
