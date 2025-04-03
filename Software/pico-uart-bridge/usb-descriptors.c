@@ -22,7 +22,7 @@
 
 #define USBD_ITF_CDC_0 0
 #define USBD_ITF_CDC_1 2
-#define USBD_ITF_MAX 4
+#define USBD_ITF_MAX 2
 
 #define USBD_CDC_0_EP_CMD 0x81
 #define USBD_CDC_1_EP_CMD 0x83
@@ -68,16 +68,16 @@ static const uint8_t usbd_desc_cfg[USBD_DESC_LEN] = {
 		USBD_CDC_CMD_MAX_SIZE, USBD_CDC_0_EP_OUT, USBD_CDC_0_EP_IN,
 		USBD_CDC_IN_OUT_MAX_SIZE),
 
-	TUD_CDC_DESCRIPTOR(USBD_ITF_CDC_1, USBD_STR_CDC, USBD_CDC_1_EP_CMD,
-		USBD_CDC_CMD_MAX_SIZE, USBD_CDC_1_EP_OUT, USBD_CDC_1_EP_IN,
-		USBD_CDC_IN_OUT_MAX_SIZE),
+	// TUD_CDC_DESCRIPTOR(USBD_ITF_CDC_1, USBD_STR_CDC, USBD_CDC_1_EP_CMD,
+	// 	USBD_CDC_CMD_MAX_SIZE, USBD_CDC_1_EP_OUT, USBD_CDC_1_EP_IN,
+	// 	USBD_CDC_IN_OUT_MAX_SIZE),
 };
 
 static char usbd_serial[USBD_STR_SERIAL_LEN] = "000000000000";
 
 static const char *const usbd_desc_str[] = {
-	[USBD_STR_MANUF] = "Raspberry Pi",
-	[USBD_STR_PRODUCT] = "Pico",
+	[USBD_STR_MANUF] = "I2Sense Lab",
+	[USBD_STR_PRODUCT] = "Simple SBC",
 	[USBD_STR_SERIAL] = usbd_serial,
 	[USBD_STR_CDC] = "Board CDC",
 };
