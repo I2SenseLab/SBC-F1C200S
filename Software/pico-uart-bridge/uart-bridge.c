@@ -17,6 +17,11 @@
 
 #define LED_PIN 21
 
+#define LED_PIN2 20
+#define LED_PIN3 19
+#define LED_PIN4 18
+
+
 #define BUFFER_SIZE 2560
 
 #define DEF_BIT_RATE 115200
@@ -309,6 +314,14 @@ int main(void)
 
 	gpio_init(LED_PIN);
 	gpio_set_dir(LED_PIN, GPIO_OUT);
+
+	// Initialize the other LED pins
+	gpio_init(LED_PIN2);
+	gpio_set_dir(LED_PIN2, GPIO_OUT);
+	gpio_init(LED_PIN3);
+	gpio_set_dir(LED_PIN3, GPIO_OUT);
+	gpio_init(LED_PIN4);
+	gpio_set_dir(LED_PIN4, GPIO_OUT);
 
 	multicore_launch_core1(core1_entry);
 
