@@ -33,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pico-uart-bridge.uf2
-          path: build/uart_bridge.uf2
+          path: Software/pico-uart-bridge/build/uart_bridge.uf2
           retention-days: 5
