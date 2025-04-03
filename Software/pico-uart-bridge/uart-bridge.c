@@ -147,6 +147,10 @@ void usb_read_bytes(uint8_t itf)
 
 			count = tud_cdc_n_read(itf, &ud->usb_buffer[ud->usb_pos], len);
 			ud->usb_pos += count;
+
+			if(count){
+				gpio_put(LED_PIN2, 1); // Turn LED2 on when data is received
+			}
 		}
 
 		mutex_exit(&ud->usb_mtx);
@@ -171,6 +175,7 @@ void usb_write_bytes(uint8_t itf)
 
 		if (count)
 			tud_cdc_n_write_flush(itf);
+			gpio_put(LED_PIN3, 1); // Turn LED3 on when data is sent
 	}
 }
 
@@ -330,6 +335,9 @@ int main(void)
 			update_uart_cfg(itf);
 			uart_write_bytes(itf);
 		}
+
+		gpio_put(LED_PIN2, 0);
+		gpio_put(LED_PIN3, 0);
 	}
 
 	return 0;
