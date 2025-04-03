@@ -2,6 +2,9 @@ name: CI Pico Bridge
 
 on:
   push:
+    branches:
+      - main
+      - update_pico_bridge
     
 jobs:
   CI:
