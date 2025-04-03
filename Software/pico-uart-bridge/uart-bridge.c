@@ -15,7 +15,7 @@
 #define MIN(a, b) ((a > b) ? b : a)
 #endif /* MIN */
 
-#define LED_PIN 25
+#define LED_PIN 21
 
 #define BUFFER_SIZE 2560
 
