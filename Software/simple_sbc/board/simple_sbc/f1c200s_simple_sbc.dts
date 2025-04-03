@@ -62,7 +62,7 @@ leds {
 
 	custom_led: led-3 {
 		label = "custom";
-		gpios = <&pio 3 21 GPIO_ACTIVE_HIGH>; // PD21
+		gpios = <&pio 3 4 GPIO_ACTIVE_HIGH>; // PD4
 		linux,default-trigger = "none";
 		default-state = "off";
 	};
