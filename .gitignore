@@ -10,3 +10,5 @@ version.h
 *.swp
 .vscode
 build
+
+~*~
