@@ -182,3 +182,11 @@ leds {
         maxim,ir-led-current-microamp = <7000>;
     };   
 };
+
+&mmc0 {
+	broken-cd;
+	bus-width = <4>;
+	disable-wp;
+	vmmc-supply = <&reg_vcc3v3>;
+	status = "okay";
+};
