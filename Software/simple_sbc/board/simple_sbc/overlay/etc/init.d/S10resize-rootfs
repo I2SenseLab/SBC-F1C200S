@@ -1,0 +1,17 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          resize-rootfs
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Resize rootfs on first boot
+### END INIT INFO
+
+case "$1" in
+    start)
+        echo "Resizing root filesystem..."
+        resize2fs /dev/mmcblk0p2
+        echo "Disabling this script..."
+        mv /etc/init.d/S10resize-rootfs /etc/init.d/S10resize-rootfs.done
+        ;;
+esac

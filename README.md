@@ -13,7 +13,7 @@ BR2_EXTERNAL=../simple_sbc make f1c200s_simple_sbc_defconfig
 To make modifications to the config run
 
 ```
-make menuconfig
+make menuconfig or xconfig (recommended)
 ```
 
 To make the actual bin file run
@@ -47,3 +47,15 @@ The usb differential traces have been routed according to this using their onlin
 | 90           | Coplanar Differential Pair | L2           | L1      | L3         | 0.1511           | 0.1300           | 0.1900                     |
 | 90           | Coplanar Differential Pair | L3           | L2      | L4         | 0.1511           | 0.1300           | 0.1900                     |
 | 90           | Coplanar Differential Pair | L4           | L3      | /          | 0.1974           | 0.1300           | 0.1900                     |
+
+
+## To write img file into sd card we use in linux
+
+```
+
+sudo dd if=sdcard.img of=/dev/* bs=1M status=progress
+sync
+
+```
+
+Note 'of=/dev/*' make sure you choose the correct dev device for the appropriate sd card
