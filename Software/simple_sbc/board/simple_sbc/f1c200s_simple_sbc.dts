@@ -114,18 +114,24 @@
 	pinctrl-0 = <&spi1_pc_pins>;
 
 	panel: panel@0 {
+		status = "okay";
 		compatible = "sitronix,st7789v";
 		reg = <0>;
-		reset-gpios = <&pio 4 11 GPIO_ACTIVE_LOW>; // PE11
-		dc-gpios = <&pio 4 12 GPIO_ACTIVE_LOW>;  // PE12
-		backlight = <&pwm>;
-		power-supply = <&reg_vcc3v3>;
-		spi-max-frequency = <100000>;
-		buswidth = <8>;  /* important for fbtft */
-		rotation = <180>;
+		spi-max-frequency = <32000000>;
+		rotation = <90>;
 		spi-cpol;
 		spi-cpha;
+		rgb;
+		fps = <30>;
+		buswidth = <8>;
+		reset-gpios = <&pio 3 6 GPIO_ACTIVE_LOW>; // PD6
+		dc-gpios = <&pio 3 8 GPIO_ACTIVE_LOW>;  // PD8
+		debug = <0>;
 	};
+};
+
+&pwm {
+	status = "okay";
 };
 
 &uart0 {
@@ -165,6 +171,7 @@
 &mmc0 {
 	bus-width = <4>;
 	disable-wp;
+	broken-cd;
 	vmmc-supply = <&reg_vcc3v3>;
 	status = "okay";
 };
@@ -174,4 +181,8 @@
 		"Headphone", "HP",
 		"Headphone", "HPCOM";
 	status = "okay";
+};
+
+&dma {
+    status = "okay";
 };

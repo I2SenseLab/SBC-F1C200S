@@ -10,7 +10,7 @@ CONFIG_DRAM_ZQ=0
 CONFIG_SPL_SPI_SUNXI=y
 CONFIG_USE_BOOTARGS=y
 CONFIG_BOOTARGS="console=ttyS0,115200n8 root=/dev/mmcblk0p2 rootwait rw rootfstype=ext4"
-CONFIG_BOOTCOMMAND="mmc dev 0; ext4load mmc 0:2 ${loadaddr} /boot/boot.scr; source ${loadaddr}"
+CONFIG_BOOTCOMMAND="mmc dev 0; fatload mmc 0:1 ${loadaddr} boot.scr; source ${loadaddr}"
 CONFIG_PREBOOT=""
 # CONFIG_SYS_DEVICE_NULLDEV is not set
 CONFIG_LOG=y
