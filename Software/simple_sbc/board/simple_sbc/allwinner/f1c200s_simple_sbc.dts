@@ -69,20 +69,6 @@
 	};
 };
 
-/*
- * Pin Definitions
- */
-
-/*
-&be0 {
-	status = "okay";
-};
-
-&de {
-	status = "okay";
-};
-*/
-
 &spi0 {
 	pinctrl-names = "default";
     pinctrl-0 = <&spi0_pc_pins>;
@@ -113,21 +99,22 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi1_pc_pins>;
 
-	panel: panel@0 {
-		status = "okay";
+	panel@0 {
 		compatible = "sitronix,st7789v";
 		reg = <0>;
-		spi-max-frequency = <32000000>;
-		rotation = <90>;
-		spi-cpol;
-		spi-cpha;
-		rgb;
-		fps = <30>;
-		buswidth = <8>;
+		spi-max-frequency = <8000000>;
 		reset-gpios = <&pio 3 6 GPIO_ACTIVE_LOW>; // PD6
 		dc-gpios = <&pio 3 8 GPIO_ACTIVE_LOW>;  // PD8
-		debug = <0>;
-	};
+		rotation = <180>;
+		power-supply = <&reg_vcc3v3>;
+		buswidth = <9>;
+
+		port {
+			panel_input: endpoint {
+				remote-endpoint = <&tcon0_out_panel>;
+			};
+		};
+    };
 };
 
 &pwm {
@@ -154,14 +141,18 @@
 	usb0_vbus-supply = <&reg_vcc5v>;
 };
 
-&i2c1 {
+&i2c0 {
 	status = "okay";
     pinctrl-names = "default";
-    pinctrl-0 = <&i2c1_pins>;
+    pinctrl-0 = <&i2c0_pins>;
+	
 
     max30102@57 {
         compatible = "maxim,max30102";
         reg = <0x57>;  // I2C address
+
+		interrupt-parent = <&pio>;
+        interrupts = <3 18>; // PD18
 
         maxim,red-led-current-microamp = <7000>;
         maxim,ir-led-current-microamp = <7000>;
@@ -184,5 +175,10 @@
 };
 
 &dma {
+    status = "okay";
+};
+
+
+&tcon0 {
     status = "okay";
 };

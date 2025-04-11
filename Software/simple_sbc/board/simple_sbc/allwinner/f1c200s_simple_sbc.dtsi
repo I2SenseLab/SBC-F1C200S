@@ -8,6 +8,10 @@
 #include <dt-bindings/reset/suniv-ccu-f1c100s.h>
 #include <dt-bindings/dma/sun4i-a10.h>
 
+#define CLK_TCON0            42
+#define CLK_BUS_TCON0        60
+#define RST_BUS_TCON0        43
+
 / {
 	#address-cells = <1>;
 	#size-cells = <1>;
@@ -203,8 +207,8 @@
 			};
 
 			/omit-if-no-ref/
-			i2c0_pd_pins: i2c0-pd-pins {
-				pins = "PD0", "PD12";
+			i2c0_pins: i2c0_pins {
+				pins = "PE11", "PE12";
 				function = "i2c0";
 			};
 
@@ -216,13 +220,6 @@
 			spi1_pc_pins: spi1-pc-pins {
 				pins = "PE9", "PE7", "PE10", "PE8";
 				function = "spi1";
-			};
-
-			i2c1_pins: i2c1-pins {
-				pins = "PD5", "PD6";
-				function = "i2c1";
-				drive-strength = <30>;
-				bias-pull-up;
 			};
 
 			uart0_pe_pins: uart0-pe-pins {
@@ -314,6 +311,36 @@
 			reg = <0x01c23400 0x400>;
 			interrupts = <22>;
 			status = "disabled";
+		};
+
+		tcon0: lcd-controller@1c0c000 {
+			compatible = "allwinner,suniv-f1c100s-tcon", "allwinner,sun4i-a10-tcon";
+			reg = <0x01c0c000 0x1000>;
+			interrupts = <32>;
+
+			clocks = <&ccu CLK_BUS_TCON0>, <&ccu CLK_TCON0>;
+			clock-names = "ahb", "tcon-ch0";
+			resets = <&ccu RST_BUS_TCON0>;
+			reset-names = "lcd";
+
+			clock-output-names = "tcon0-pixel-clock";
+			#clock-cells = <0>;
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+				};
+
+				port@1 {
+					reg = <1>;
+					tcon0_out_panel: endpoint {
+						remote-endpoint = <&panel_input>;
+					};
+				};
+			};
 		};
 
 		uart0: serial@1c25000 {
