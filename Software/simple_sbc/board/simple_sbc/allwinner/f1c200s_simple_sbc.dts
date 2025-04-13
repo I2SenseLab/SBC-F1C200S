@@ -7,6 +7,7 @@
 /dts-v1/;
 #include "f1c200s_simple_sbc.dtsi"
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
 
 / {
 	model = "I2Sense Simple SBC";
@@ -107,7 +108,7 @@
 		dc-gpios = <&pio 3 8 GPIO_ACTIVE_LOW>;  // PD8
 		rotation = <180>;
 		power-supply = <&reg_vcc3v3>;
-		buswidth = <9>;
+		buswidth = <8>;
 
 		port {
 			panel_input: endpoint {
@@ -142,17 +143,16 @@
 };
 
 &i2c0 {
-	status = "okay";
+    status = "okay";
     pinctrl-names = "default";
     pinctrl-0 = <&i2c0_pins>;
-	
 
     max30102@57 {
         compatible = "maxim,max30102";
-        reg = <0x57>;  // I2C address
+        reg = <0x57>;
 
-		interrupt-parent = <&pio>;
-        interrupts = <3 18>; // PD18
+        interrupt-parent = <&pio>;
+        interrupts = <3 18 IRQ_TYPE_EDGE_FALLING>; // Port D (3), Pin 18, falling edge trigger
 
         maxim,red-led-current-microamp = <7000>;
         maxim,ir-led-current-microamp = <7000>;

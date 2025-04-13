@@ -1,1 +1,0 @@
-This folder should contain any patches required to get the system to work. 
