@@ -387,6 +387,7 @@
  
  static int st7789v_prepare(struct drm_panel *panel)
  {
+     
      struct st7789v *ctx = panel_to_st7789v(panel);
      u8 mode, pixel_fmt, polarity;
      int ret;
@@ -626,6 +627,8 @@
      struct st7789v *ctx;
      int ret;
  
+     dev_info(dev, "My driver probe called — patch applied!\n");
+
      ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
      if (!ctx)
          return -ENOMEM;
