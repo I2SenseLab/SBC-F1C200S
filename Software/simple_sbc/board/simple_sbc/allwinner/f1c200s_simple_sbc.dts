@@ -100,8 +100,8 @@
     pinctrl-names = "default";
     pinctrl-0 = <&spi1_pc_pins>;
 
-    st7789v@0 {
-        compatible = "sitronix,st7789v"; // make sure this matches your fbdev driver's expected string
+    panel@0 {
+        compatible = "sitronix,st7789v";
         reg = <0>;
         spi-max-frequency = <8000000>;
         reset-gpios = <&pio 3 6 GPIO_ACTIVE_LOW>; // PD6
@@ -110,8 +110,12 @@
         power-supply = <&reg_vcc3v3>;
         spi-cpol;
         spi-cpha;
+
+        width = <240>;
+        height = <320>;
     };
 };
+
 
 
 &pwm {
