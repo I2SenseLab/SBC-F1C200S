@@ -1,6 +1,6 @@
---- /home/devin/SBC-F1C200S/Software/buildroot/output/build/linux-6.14.1/drivers/gpu/drm/panel/panel-sitronix-st7789v.c	2025-04-07 02:11:12.000000000 -0600
-+++ /home/devin/SBC-F1C200S/Software/st7789v_driver.c	2025-04-17 08:57:37.933835391 -0600
-@@ -3,692 +3,720 @@
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+@@ -3,692 +3,724 @@
   * Copyright (C) 2017 Free Electrons
   */
  
@@ -1324,9 +1324,11 @@
 +         return -ENOMEM;
 + 
 +     ctx->dc = devm_gpiod_get_optional(dev,"dc", GPIOD_OUT_LOW);
++     dev_info(dev, "dc GPIO: %s\n", ctx->dc ? "available" : "not found");
++
 +     ret = PTR_ERR_OR_ZERO(ctx->dc);
 +     if(ret)
-+        return dev_err_probe(dev,ret,"Failed to get D/C line\n")
++        return dev_err_probe(dev,ret,"Failed to get D/C line\n");
 +
 +     ctx->spi_9bit = !ctx->dc ? true: false;
 +
@@ -1341,7 +1343,9 @@
 +
 +     ret = spi_setup(spi);
 +     if (ret < 0)
-+         return dev_err_probe(&spi->dev, ret, "Failed to setup spi\n");
++         return dev_err_probe(&spi->dev, ret,
++                              "Failed to setup spi in %s-bit mode\n",
++                              ctx->spi_9bit ? "9" : "8");
 + 
 +     ctx->info = device_get_match_data(&spi->dev);
 + 

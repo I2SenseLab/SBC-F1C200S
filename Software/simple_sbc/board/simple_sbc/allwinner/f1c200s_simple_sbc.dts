@@ -96,27 +96,23 @@
 };
 
 &spi1 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi1_pc_pins>;
+    status = "okay";
+    pinctrl-names = "default";
+    pinctrl-0 = <&spi1_pc_pins>;
 
-	panel@0 {
-		compatible = "sitronix,st7789v";
-		reg = <0>;
-		spi-max-frequency = <8000000>;
-		reset-gpios = <&pio 3 6 GPIO_ACTIVE_LOW>; // PD6
-		dc-gpios = <&pio 3 8 GPIO_ACTIVE_LOW>;  // PD8
-		rotation = <180>;
-		power-supply = <&reg_vcc3v3>;
-		buswidth = <8>;
-
-		port {
-			panel_input: endpoint {
-				remote-endpoint = <&tcon0_out_panel>;
-			};
-		};
+    st7789v@0 {
+        compatible = "sitronix,st7789v"; // make sure this matches your fbdev driver's expected string
+        reg = <0>;
+        spi-max-frequency = <8000000>;
+        reset-gpios = <&pio 3 6 GPIO_ACTIVE_LOW>; // PD6
+        dc-gpios = <&pio 3 8 GPIO_ACTIVE_LOW>;    // PD8
+        rotation = <180>;
+        power-supply = <&reg_vcc3v3>;
+        spi-cpol;
+        spi-cpha;
     };
 };
+
 
 &pwm {
 	status = "okay";

@@ -634,9 +634,11 @@
          return -ENOMEM;
  
      ctx->dc = devm_gpiod_get_optional(dev,"dc", GPIOD_OUT_LOW);
+     dev_info(dev, "dc GPIO: %s\n", ctx->dc ? "available" : "not found");
+
      ret = PTR_ERR_OR_ZERO(ctx->dc);
      if(ret)
-        return dev_err_probe(dev,ret,"Failed to get D/C line\n")
+        return dev_err_probe(dev,ret,"Failed to get D/C line\n");
 
      ctx->spi_9bit = !ctx->dc ? true: false;
 
@@ -651,7 +653,9 @@
 
      ret = spi_setup(spi);
      if (ret < 0)
-         return dev_err_probe(&spi->dev, ret, "Failed to setup spi\n");
+         return dev_err_probe(&spi->dev, ret,
+                              "Failed to setup spi in %s-bit mode\n",
+                              ctx->spi_9bit ? "9" : "8");
  
      ctx->info = device_get_match_data(&spi->dev);
  
