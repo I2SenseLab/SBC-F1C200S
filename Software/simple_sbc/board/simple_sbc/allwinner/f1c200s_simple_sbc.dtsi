@@ -313,36 +313,6 @@
 			status = "disabled";
 		};
 
-		tcon0: lcd-controller@1c0c000 {
-			compatible = "allwinner,suniv-f1c100s-tcon", "allwinner,sun4i-a10-tcon";
-			reg = <0x01c0c000 0x1000>;
-			interrupts = <32>;
-
-			clocks = <&ccu CLK_BUS_TCON0>, <&ccu CLK_TCON0>;
-			clock-names = "ahb", "tcon-ch0";
-			resets = <&ccu RST_BUS_TCON0>;
-			reset-names = "lcd";
-
-			clock-output-names = "tcon0-pixel-clock";
-			#clock-cells = <0>;
-
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				port@0 {
-					reg = <0>;
-				};
-
-				port@1 {
-					reg = <1>;
-					tcon0_out_panel: endpoint {
-						remote-endpoint = <&panel_input>;
-					};
-				};
-			};
-		};
-
 		uart0: serial@1c25000 {
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c25000 0x400>;

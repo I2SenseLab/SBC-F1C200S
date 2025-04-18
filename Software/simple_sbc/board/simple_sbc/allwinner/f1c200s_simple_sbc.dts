@@ -110,7 +110,6 @@
         power-supply = <&reg_vcc3v3>;
         spi-cpol;
         spi-cpha;
-
         width = <240>;
         height = <320>;
     };
@@ -179,6 +178,3 @@
 };
 
 
-&tcon0 {
-    status = "okay";
-};
