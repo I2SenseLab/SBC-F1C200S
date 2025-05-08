@@ -68,6 +68,11 @@
 			default-state = "off";
 		};
 	};
+
+	usb_role_sw_host: role-switch {
+		compatible = "simple-usb-role-switch";
+		role       = "host";          /* constant host */
+	};
 };
 
 &spi0 {
@@ -100,22 +105,21 @@
     pinctrl-names = "default";
     pinctrl-0 = <&spi1_pc_pins>;
 
-    panel@0 {
-        compatible = "sitronix,st7789v";
+    display@0 {
+        compatible = "ra8875";
         reg = <0>;
-        spi-max-frequency = <8000000>;
-        reset-gpios = <&pio 3 6 GPIO_ACTIVE_LOW>; // PD6
-        dc-gpios = <&pio 3 8 GPIO_ACTIVE_LOW>;    // PD8
-        rotation = <180>;
-        power-supply = <&reg_vcc3v3>;
-        spi-cpol;
-        spi-cpha;
-        width = <240>;
-        height = <320>;
+        spi-max-frequency = <1000000>;
+
+		dc-gpios    = <&pio 4 4 GPIO_ACTIVE_HIGH>; /* PE4 – adjust */
+        reset-gpios = <&pio 4 5 GPIO_ACTIVE_LOW>;  /* PE5 – your line */
+
+        width  = <480>;
+        height = <272>;
+		
+        rotate = <0>;
+        bgr    = <0>;
     };
 };
-
-
 
 &pwm {
 	status = "okay";
@@ -132,9 +136,17 @@
 };
 
 &usb_otg {
-    dr_mode = "host";
-    status = "okay";
+	dr_mode = "host";
+	status  = "okay";
+
+	/* leave the endpoint wiring unchanged */
+	port {
+		usbotg_hs_ep: endpoint {
+			remote-endpoint = <&typec_con_ep>;
+		};
+	};
 };
+
 
 &usbphy {
 	status = "okay";
@@ -155,7 +167,51 @@
 
         maxim,red-led-current-microamp = <7000>;
         maxim,ir-led-current-microamp = <7000>;
-    };   
+    };
+
+	imu@28 {
+        compatible = "bosch,bno055";
+        reg = <0x28>;
+        reset-gpios = <&pio 3 9 GPIO_ACTIVE_HIGH>; // PD9
+	};
+
+	ssd1306_i2c: oled@3d {
+		compatible = "solomon,ssd1306";
+		reg = <0x3c>;
+		width = <128>;
+        height = <32>;
+        rotate = <0>;
+	};
+
+	stusb1600@29 {
+		compatible = "st,stusb1600";
+		reg = <0x29>;
+
+		interrupt-parent = <&pio>;
+		interrupts = <3 5 IRQ_TYPE_LEVEL_LOW>; // PD5 or actual IRQ pin
+		status = "okay";
+
+		connector {
+			compatible = "usb-c-connector";
+			label = "USB-C";
+			power-role = "source";
+			data-role = "host";
+			typec-power-opmode = "default";
+
+			usb-role-switch = <&usb_role_sw_host>;
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					typec_con_ep: endpoint {
+						remote-endpoint = <&usbotg_hs_ep>;
+					};
+				};
+			};
+		};
+	};
 };
 
 &mmc0 {
