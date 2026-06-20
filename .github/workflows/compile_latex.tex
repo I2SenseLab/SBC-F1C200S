@@ -1,0 +1,33 @@
+name: Compile LaTeX Documents in Repository
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build_individual_papers:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        paper:
+          - dir: Paper
+            tex_file: sbc_paper
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v6
+  
+    - name: List checked out files
+      run: ls -laR
+      
+    - name: Compile Paper
+      uses: devinatkin/latex-action/compile_latex@main
+      with:
+        tex-file: ${{ matrix.paper.tex_file }}
+        directory: ${{ matrix.paper.dir }}
+
+    - name: Upload Paper PDF to Artifacts
+      uses: actions/upload-artifact@v6
+      with:
+        name: ${{ matrix.paper.tex_file }}_paper_pdf
+        path: ${{ matrix.paper.dir }}/*.pdf
