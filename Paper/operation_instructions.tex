@@ -1,11 +1,150 @@
 \section{Operation instructions}
-%Provide detailed instructions for the safe and proper operation of the hardware. 
-%> Step-by-step operational instructions for operating the hardware. 
-%> Use visual instructions as necessary. 
-%> Highlight potential safety hazards.
 
-\textit{Provide detailed, step-by-step instructions for the safe and proper operation of the hardware.  
-\begin{itemize}
-\item[$\bullet$]Use visual instructions, as necessary.
-\item[$\bullet$]Highlight any potential safety hazards.
-\end{itemize}}
+The SimpleSBC platform is intended to provide a low-cost embedded Linux 
+development environment for research, education, and custom instrumentation 
+applications. Once assembled and programmed, the board may be operated either 
+as a standalone Linux system or as the processing component of a larger 
+experimental platform through the use of the expansion and peripheral 
+interfaces.
+
+\subsection{Preparing the system}
+
+Prior to operation, verify that the board has been assembled correctly 
+according to the instructions provided in the Build Instructions section. 
+Confirm that a valid Linux image has been written to a microSD card using 
+the Buildroot configuration supplied in the repository.
+
+Insert the microSD card into the microSD socket and ensure that any required 
+peripherals, such as displays, USB devices, serial connections, or daughter 
+boards, are connected before power is applied.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{Images/board_overview.png}
+\caption{Overview of the assembled SimpleSBC platform showing major connectors and interfaces.}
+\label{fig:board_overview}
+\end{figure}
+
+Figure \ref{fig:board_overview} should identify the microSD connector, USB-C power input, 
+serial interface, user buttons, and any expansion connectors available on the board.
+
+\subsection{Powering the board}
+
+Connect a suitable USB power source to the USB-C connector. 
+During development, it is recommended to use a current-limited bench supply or 
+a USB power meter to monitor power consumption.
+
+After power is applied, the board will begin the boot sequence automatically. 
+
+Typical boot times are less than one minute depending on the software image and attached peripherals.
+If a serial terminal is connected through the RP2040 USB-to-UART bridge, 
+Linux boot messages should appear shortly after power is applied. 
+Successful completion of the boot sequence is indicated by the appearance of a 
+login prompt or application-specific startup messages.
+
+\subsection{Serial console access}
+
+During development and debugging, interaction with the system is typically 
+performed through the serial console.
+
+\begin{enumerate}
+\item Connect the USB cable to the host computer.
+\item Identify the serial device created by the RP2040 USB-to-UART bridge.
+\item Open a terminal emulator such as PuTTY, Tera Term, minicom, screen, or picocom.
+\item Configure the serial connection according to the settings specified by the software image.
+\item Reset or power cycle the board if boot messages are not visible.
+\end{enumerate}
+
+The serial console provides access to Linux boot messages, diagnostic output, 
+and command-line administration of the system.
+
+\subsection{Running software}
+
+After the system has booted successfully, user applications may be executed 
+directly from the Linux command line or configured to launch automatically 
+during startup.
+
+The Buildroot image included with this work contains demonstration scripts 
+and example applications that may be used to validate correct operation of 
+the processor, storage system, display interface, and software environment. 
+Researchers may replace these applications with custom software appropriate 
+to their own experimental requirements.
+
+The board was intentionally designed to support customization. Additional 
+peripherals may be connected through the available expansion interfaces and 
+controlled through Linux device drivers, user-space applications, or custom 
+kernel modifications.
+
+\subsection{Using custom daughter boards}
+
+A significant portion of the PCB area is reserved for daughter-board integration. 
+Researchers wishing to adapt the platform for specific experiments may install 
+custom hardware in this area and interface with the Linux system through GPIO, 
+UART, SPI, I\textsuperscript{2}C, PWM, or other available interfaces.
+
+When integrating custom hardware:
+
+\begin{enumerate}
+\item Verify voltage compatibility with the board.
+\item Confirm pin assignments using the schematic and device tree files.
+\item Test new peripherals individually before integrating them into larger systems.
+\item Update the Linux device tree if additional hardware resources are required.
+\end{enumerate}
+
+\subsection{Shutdown procedure}
+
+To prevent filesystem corruption, the operating system should be shut down 
+gracefully before removing power.
+
+From the Linux command line:
+
+\begin{verbatim}
+shutdown -h now
+\end{verbatim}
+
+or
+
+\begin{verbatim}
+poweroff
+\end{verbatim}
+
+Wait until all filesystem activity has stopped before disconnecting power 
+or removing the microSD card.
+
+\subsection{Troubleshooting}
+
+If the board does not boot:
+
+\begin{enumerate}
+\item Verify that the microSD card contains a valid software image.
+\item Confirm that the power supply is capable of providing sufficient current.
+\item Check for visible assembly defects or damaged components.
+\item Monitor the serial console for boot messages.
+\item Verify that the correct device tree and Buildroot configuration were 
+used during image generation.
+\end{enumerate}
+
+If the display or peripheral hardware does not function correctly:
+
+\begin{enumerate}
+\item Verify connector orientation and cable installation.
+\item Confirm that the required kernel patches and device tree configuration 
+are present.
+\item Check Linux system logs for driver initialization messages.
+\item Verify peripheral functionality independently where possible.
+\end{enumerate}
+
+\subsection{Safety considerations}
+
+The platform operates at low voltages and is intended for laboratory, 
+educational, and research use. Nevertheless, users should avoid modifying 
+the hardware while power is applied and should verify that all external 
+peripherals operate within the supported voltage ranges.
+
+Improper wiring of expansion hardware may damage the processor, peripheral 
+devices, or power-management circuitry. During initial development, current 
+limiting is recommended whenever new hardware is connected.
+
+The board should not be exposed to moisture, conductive debris, or excessive 
+mechanical stress. If any component becomes unusually hot during operation, 
+disconnect power immediately and investigate the cause before further use.
