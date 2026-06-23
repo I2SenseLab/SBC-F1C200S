@@ -1,15 +1,122 @@
 \section{Build instructions}
-%Provide detailed, step by step instructions for the construction of the reported hardware include all necessary information for reproducing the submitted hardware.
-% > Explain and, when possible, characterize design decisions. Including design alternatives if they exist. 
-% > Use visual instructions such as schematics, images, and videos. 
-% > Clearly reference design files and component parts described in the Design File Summary and Bill of Materials. 
-% >Highlight potential safety concerns that may arise
 
-\textit{Provide detailed, step-by-step construction instructions for the submitted hardware:
-\begin{itemize}
-\item[$\bullet$]Include all necessary information for reproducing it. 
-\item[$\bullet$]Explain and (when possible) characterize design decisions. Include any design alternatives you created.
-\item[$\bullet$]Use visual instructions such as schematics, images and videos.
-\item[$\bullet$]Clearly reference design files and component parts described in the \textbf{Design file summary} and the \textbf {Bill of materials summary}.
-\item[$\bullet$]Highlight any potential safety concerns.
-\end{itemize}}
+The complete hardware design files are provided in the project repository under 
+the \texttt{Hardware} directory. The board can be reproduced using the editable 
+DipTrace design file, the exported Gerber archive, the bill of materials, and 
+the pick-and-place file described in the Design files summary and Bill of 
+materials summary.
+
+\subsection{PCB fabrication and assembly}
+
+The PCB was designed to be fabricated and assembled through a low-cost 
+PCB manufacturing service such as JLCPCB. To reproduce the board, upload 
+\texttt{Hardware/SimpleSBC_gerber.zip} to the PCB manufacturer and use the 
+fabrication settings specified by the manufacturer for the submitted Gerber 
+files. The component placement and sourcing information are provided in 
+\texttt{Hardware/sbcPNP.csv} and \texttt{Hardware/sbcBOM.csv}. 
+The reference designators in these files correspond directly to the 
+designators in \texttt{Hardware/SimpleSBC.dip}.
+
+Before ordering assembled boards, the bill of materials should be checked 
+against current part availability. If any component is unavailable, the 
+replacement part should be verified for footprint compatibility, electrical 
+compatibility, and assembly compatibility. Particular care should be taken 
+when substituting the Allwinner F1C200s processor, RP2040 microcontroller, 
+SPI flash memories, USB-C controllers, voltage regulators, MOSFETs, and 
+crystal oscillators, since these parts may affect boot, power sequencing, 
+USB operation, or Linux compatibility.
+
+\subsection{Design review before manufacture}
+
+Prior to fabrication, open \texttt{Hardware/SimpleSBC.dip} in DipTrace and 
+inspect the schematic and PCB layout. Confirm that the power rails, USB-C 
+connectors, microSD interface, SPI flash, display interface, UART bridge, 
+and user-accessible connectors match the intended revision of the hardware. 
+The exported manufacturing files should be regenerated if any schematic or 
+layout changes are made.
+
+The design uses the Allwinner F1C200s as the primary Linux-capable processor. 
+This device was selected because it provides a low-cost embedded Linux 
+platform suitable for simple research instruments while avoiding the cost 
+and size of a Raspberry Pi-class single-board computer. An RP2040 is 
+included as a USB-to-UART bridge to simplify programming, debugging, and 
+board bring-up. This choice reduces the need for external serial adapters 
+during development and makes the board easier to reproduce in teaching or 
+laboratory settings.
+
+\subsection{Board bring-up}
+
+After receiving the assembled PCB, visually inspect the board under 
+magnification before applying power. Check for obvious solder bridges, 
+missing components, incorrectly oriented components, or mechanical damage. 
+Special attention should be given to fine-pitch ICs, USB-C connectors, the 
+microSD socket, crystal oscillators, and power-management components.
+
+Before inserting a microSD card or connecting the board to a host computer, 
+check the resistance between each major power rail and ground. A near-short 
+may indicate an assembly fault and should be investigated before power is 
+applied. If a current-limited bench supply is available, power the board 
+initially with a conservative current limit and monitor the input current.
+
+Once the board passes visual and electrical inspection, connect the board 
+over USB and verify that the RP2040 USB-to-UART bridge enumerates 
+correctly on the host computer. The firmware for this bridge is 
+provided in \texttt{Software/pico-uart-bridge}. If the bridge firmware 
+must be rebuilt, use the files in that directory together with the 
+Raspberry Pi Pico SDK as described in the included README file.
+
+\subsection{Linux image preparation}
+
+The embedded Linux image is built using the Buildroot external tree 
+located in \texttt{Software/simple_sbc}. The primary board configuration 
+is provided by \texttt{Software/simple_sbc/configs/f1c200s_simple_sbc_defconfig}. 
+The board-specific device tree files are located in 
+\texttt{Software/simple_sbc/board/simple_sbc/allwinner}. These files define the 
+hardware interfaces used by the Linux kernel, including the processor configuration 
+and board-level peripherals.
+
+To build the image, configure Buildroot using the provided defconfig, 
+then compile the image using the standard Buildroot workflow. 
+The resulting image can be written to a microSD card. After writing the image, 
+insert the microSD card into the board and apply power. Boot messages should 
+be visible through the UART bridge.
+
+\subsection{Software and display configuration}
+
+The Buildroot tree includes board-specific files for image generation, 
+boot configuration, root filesystem overlays, and Linux kernel patches. 
+The patch located at \texttt{Software/simple_sbc/board/simple_sbc/patches/linux/6.14.1/0001-st7789v-support-dc-gpio-8bit-spi.patch} 
+provides support for the ST7789V display interface used by the board. 
+The root filesystem overlay includes startup scripts and demonstration files 
+used to validate the hardware after boot.
+
+After the board boots, confirm that the serial console is available, the microSD 
+root filesystem is mounted, and the expected display or peripheral interfaces are 
+detected. The included example files in the overlay directory may be used for simple 
+functional testing.
+
+\subsection{Enclosure fabrication}
+
+The enclosure files are provided as \texttt{Hardware/Enclosure/SimpleSBC_EnclosureTop.stl} 
+and \texttt{Hardware/Enclosure/SimpleSBC_EnclosureBottom.stl}. 
+These parts may be fabricated using a standard 3D printer or an external printing 
+service. After printing, place the assembled PCB in the bottom enclosure piece and 
+verify that all connectors, buttons, and openings align before attaching the top piece.
+
+If the design is modified, the enclosure should be checked against the updated board 
+outline and connector locations. Minor dimensional adjustments may be required depending 
+on the 3D printing process and material used.
+
+\subsection{Safety considerations}
+
+The board is intended for low-voltage embedded electronics development. 
+However, the assembled PCB should still be inspected carefully before power is applied. 
+Do not power the board if there are visible solder bridges, damaged components, 
+or signs of overheating. During initial bring-up, use a current-limited supply where possible.
+
+The board should not be connected directly to mains voltage. 
+Any external power supply used with the board should be current-limited and appropriately rated. 
+Components such as voltage regulators, MOSFETs, 
+and USB-C power circuitry may become hot if incorrectly assembled, overloaded, or shorted. 
+Disconnect power immediately if excessive current draw, heat, smoke, 
+or unexpected behaviour is observed.
