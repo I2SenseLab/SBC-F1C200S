@@ -1,8 +1,42 @@
 \section{Hardware in context}
-% Include a short description of the hardware, putting into context of similar open hardware and proprietary equipment in the field.
-The Simple SBC board is a reasonable replacement for a lot of Raspberry Pi computers used in Research applications. 
-The board is not intended to be a direct substitute, 
-but instead an alternate design path when a full Raspberry Pi is more powerful than a system requires or not customizable enough for the application. 
-This work is based on building out a design based on guidance from the Linux Business Card \cite{hilliard_business_card_linux_2019} and 
-So you want to build an embedded Linux System blog posts \cite{carlson_embedded_linux}.
 
+Single-board computers (SBCs) have become an important platform for research, education, 
+and rapid prototyping. 
+Platforms such as the Raspberry Pi provide a low-cost and accessible method for deploying Linux-based 
+applications, acquiring data, and interfacing with external hardware. 
+As a result, Raspberry Pi systems are frequently adopted in laboratory environments, 
+educational settings, and early-stage research prototypes.
+
+Despite their popularity, commercial SBCs are not ideal for every application. 
+Research projects often require only a subset of the functionality provided by a general-purpose 
+computer, while simultaneously requiring specialized interfaces, custom form factors, 
+reduced power consumption, or lower deployment costs. 
+Integrating these requirements around an off-the-shelf SBC frequently necessitates the design of 
+additional carrier boards, interface adapters, or custom expansion hardware, 
+increasing both system complexity and overall cost.
+
+The Simple SBC presented in this work provides an alternative design path for 
+applications that require a Linux-capable embedded platform but do not require 
+the full performance or ecosystem of a Raspberry Pi. 
+Rather than serving as a direct replacement, 
+the design demonstrates how a low-cost Linux computer can be integrated into a 
+custom hardware platform using components that are readily available through 
+commercial PCB fabrication and assembly services. 
+The board includes the processing, memory, power regulation, storage, 
+and expansion interfaces necessary to operate a Linux-based system while 
+maintaining a compact and customizable architecture.
+
+The design was inspired by prior demonstrations of minimal Linux-capable hardware, 
+including the Linux Business Card project by \citeauthor{hilliard_business_card_linux_2019} 
+\cite{hilliard_business_card_linux_2019} and the embedded Linux design guidance presented 
+by Carlson \cite{carlson_embedded_linux}. These projects demonstrated that practical 
+Linux systems can be constructed using a relatively small number of components and 
+provided valuable insight into hardware design, boot processes, and software integration. 
+Building upon these concepts, the Simple SBC extends the idea into a reusable research 
+platform intended for customization, experimentation, and integration into larger embedded systems.
+
+The resulting platform occupies a middle ground between highly integrated commercial SBCs 
+and fully custom embedded Linux designs. It provides researchers, educators, and developers 
+with an open-source reference design that can be fabricated, modified, and integrated 
+into application-specific hardware while retaining the flexibility and software 
+ecosystem of a Linux-based system.
