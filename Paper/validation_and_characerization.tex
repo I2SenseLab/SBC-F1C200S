@@ -1,12 +1,96 @@
 \section{Validation and characterization}
-%Demonstrate the operation of the hardware and characterize its performance over relevant critical metrics
-%> Demonstrate the use of the hardware for a relevant use case. 
-%> If possible, characterize performance of the hardware over operational parameters. 
-%> Create a bulleted list that describes the capabilities (and limitations) of the hardware. For example consider descriptions of load, operation time, spin speed, coefficient of variation, accuracy, precision and etc. 
 
-\textit{Demonstrate the operation of the hardware and characterize its performance for a specific scientific application. 
+To validate the operation of the SimpleSBC platform, 
+the board was configured as a standalone web server hosting a static website. 
+This use case was selected because it exercises multiple subsystems simultaneously, 
+including Linux boot, microSD storage, networking, memory management, and 
+long-duration operation. The demonstration also reflects a realistic deployment 
+scenario for educational, laboratory, and embedded monitoring applications.
+
+\subsection{Website hosting demonstration}
+
+A Linux image was generated using the Buildroot configuration described 
+previously and written to a microSD card. Following boot, a lightweight 
+web server was installed and configured to serve a static website over 
+the board's network interface.
+
+Figure \ref{fig:webserver_demo} shows the test setup used for validation. 
+The SimpleSBC was connected to a local area network and accessed from a 
+separate client computer using a standard web browser.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{Images/webserver_demo.png}
+\caption{Validation setup showing the SimpleSBC hosting a website accessible from a remote client.}
+\label{fig:webserver_demo}
+\end{figure}
+
+The website remained accessible throughout testing and demonstrated 
+successful operation of the processor, memory subsystem, storage interface, 
+operating system, and network stack. This validation confirms that the 
+hardware can support practical Linux-based workloads and may serve as the 
+foundation for more specialized scientific applications.
+
+\subsection{Performance characterization}
+
+The objective of this work is not to maximize computational performance 
+but rather to provide a low-cost and highly customizable Linux-capable 
+embedded platform. Therefore, characterization focused on validating 
+correct operation rather than comparing performance against higher-end 
+commercial single-board computers.
+
+System functionality was evaluated using:
+
+\begin{enumerate}
+\item Successful Linux boot from microSD storage.
+\item Reliable operation of the serial console.
+\item Network connectivity.
+\item Successful hosting of a static website.
+\item Continuous operation without unexpected system crashes during testing.
+\end{enumerate}
+
+Future users may further characterize the platform for application-specific 
+metrics such as network throughput, processor utilization, power consumption, 
+storage performance, or peripheral response times.
+
+\subsection{Capabilities and limitations}
+
+The capabilities and limitations observed during validation are summarized below.
+
 \begin{itemize}
-\item[$\bullet$]Highlight a relevant use case.
-\item[$\bullet$]If possible, characterize performance of the hardware over operational parameters.
-\item[$\bullet$]Create a bulleted list describing the capabilities (and limitations) of the hardware. For example, load and operation time, spin speed, coefficient of variation, accuracy, precision, etc.
-\end{itemize}}
+\item Supports a complete Linux operating system generated using Buildroot.
+
+```
+\item Can host lightweight network services such as web servers, data loggers, 
+remote monitoring systems, and laboratory control interfaces.
+
+\item Provides a low-cost alternative to larger commercial single-board computers 
+for embedded applications.
+
+\item Supports customization through both hardware modifications and software 
+configuration.
+
+\item Includes accessible design files allowing adaptation to application-specific 
+requirements.
+
+\item Can be fabricated using commercially available PCB assembly services without 
+requiring specialized manufacturing equipment.
+
+\item Offers substantially lower computational performance than modern Raspberry 
+Pi platforms.
+
+\item Limited memory and processor resources make the platform unsuitable for 
+computationally intensive workloads such as machine learning inference, 
+computer vision, or multimedia processing.
+
+\item Storage performance is constrained by the microSD interface.
+
+\item Peripheral support is dependent on Linux kernel support and available 
+device drivers.
+```
+
+\end{itemize}
+
+The validation results demonstrate that the platform successfully fulfills its 
+intended role as a compact and customizable Linux-capable single-board computer 
+suitable for educational, research, and embedded instrumentation applications.
