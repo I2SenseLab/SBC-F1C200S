@@ -1,21 +1,52 @@
-\section{Design files summary}
-\textit{Complete a separate row for each design file associated with your hardware (including the primary design files). Any empty rows should be deleted.}
-% Please include a summary of all design files for your hardware by filling rows of the table below
-\vskip 0.1cm
-\tabulinesep=1ex
-\begin{tabu} to \linewidth {|X|X|X[1.5,1]|X[1.5,1]|} 
+\begin{tabu} to \linewidth {|X|X|X[1.5,1]|X[1.5,1]|}
 \hline
-\textbf{Design filename} & \textbf{File type} & \textbf{Open source license} & \textbf{Location of the file} \\\hline
-%Insert design files
-\textit{For example: Design file 1} & \textit{e.g. CAD file, figures, videos} & \textit{All designs must be submitted under an open hardware license. Enter the corresponding open source license for the file.} & \textit{Either enter the URL for the repository or the sentence: "Available with the article".}  \\\hline
-\dots & \dots & \dots & \dots \\\hline
-\dots & \dots & \dots & \dots \\\hline
-% Design file 3 & File type & License & Link \\\hline
+\textbf{Design filename} & \textbf{File type} & \textbf{Open source license} & \textbf{Location of the file} \\hline
+
+SimpleSBC.dip & DipTrace schematic and PCB design files & Apache-2.0 & Repository associated with this article \\hline
+
+SimpleSBC_gerber.zip & Manufacturing files (Gerber, drill, fabrication outputs) & Apache-2.0 & Repository associated with this article \\hline
+
+sbcBOM.csv & Bill of materials & Apache-2.0 & Repository associated with this article \\hline
+
+sbcPNP.csv & Pick-and-place assembly file & Apache-2.0 & Repository associated with this article \\hline
+
+SimpleSBC_EnclosureTop.stl, SimpleSBC_EnclosureBottom.stl & Mechanical enclosure CAD files & Apache-2.0 & Repository associated with this article \\hline
+
+f1c200s_simple_sbc.dts, f1c200s_simple_sbc.dtsi & Linux device tree source files & Apache-2.0 & Repository associated with this article \\hline
+
+f1c200s_simple_sbc_defconfig & Buildroot configuration files & Apache-2.0 & Repository associated with this article \\hline
+
+pico-uart-bridge & RP2040 USB-to-UART firmware source code & Apache-2.0 & Repository associated with this article \\hline
+
+0001-st7789v-support-dc-gpio-8bit-spi.patch & Linux kernel patch enabling LCD support & Apache-2.0 & Repository associated with this article \\hline
+
 \end{tabu}
 
-
-% For each design file listed in the summary above, include a short description of the file below (one or two sentences)
 \vskip 0.3cm
-\noindent
-\textit{For each design file listed in the summary table above, include a short description of the file below (just one or two sentences per design file).}
 
+\textbf{SimpleSBC.dip} \
+DipTrace project containing the complete schematic and PCB layout of the single-board computer. This file may be modified to adapt the design to alternative research applications or form factors.
+
+\textbf{SimpleSBC_gerber.zip} \
+Manufacturing-ready fabrication files used for PCB production. These files can be directly submitted to PCB fabrication services.
+
+\textbf{sbcBOM.csv} \
+Bill of materials listing all components required to assemble the hardware platform, including manufacturer part numbers and quantities.
+
+\textbf{sbcPNP.csv} \
+Pick-and-place file used for automated assembly of the PCB. This file enables low-cost assembly through commercial PCB assembly services.
+
+\textbf{SimpleSBC_EnclosureTop.stl, SimpleSBC_EnclosureBottom.stl} \
+3D-printable enclosure files providing mechanical protection for the assembled board while maintaining access to connectors and interfaces.
+
+\textbf{f1c200s_simple_sbc.dts, f1c200s_simple_sbc.dtsi} \
+Linux device tree descriptions defining the hardware configuration of the board, including peripheral mappings and display interfaces.
+
+\textbf{f1c200s_simple_sbc_defconfig} \
+Buildroot configuration used to generate a reproducible embedded Linux image for the platform.
+
+\textbf{pico-uart-bridge} \
+Firmware source code for the RP2040-based USB-to-UART bridge used during software development and debugging of the board.
+
+\textbf{0001-st7789v-support-dc-gpio-8bit-spi.patch} \
+Linux kernel patch providing support for the integrated ST7789V display interface used by the hardware platform.
