@@ -1,59 +1,57 @@
-
 \section*{\textit{Bill of materials}}
-% For a complex Bill of Materials, the complete Bill of Materials (editable spreadsheet file e.g., ODS file type or PDF file) can be uploaded in an open access online location such as the Open Science Framework repository. Include the link here. Alternatively, the Bill of Materials can be uploaded at the time of submission on the online Elsevier submission interface as supplementary material.
 
-% > To make it easy to tell which item in the Bill of Materials corresponds to which component in your design file(s), use matching designators in both places, or otherwise explain the correspondence.
-
-% > For material type, select from: Metal, semi-conductor, ceramic, polymer, biomaterial, organic, inorganic, composite, nanomaterial, semiconductor, non-specific, or other  
-\textit{If your bill of materials is long or complex, you can upload the details in an editable spreadsheet, e.g., ODS file type, Excel spreadsheet or PDF file, to an open access online location, such as the \href{https://osf.io/}{\underline{Open Science Framework}} repository. Include the link here. Alternatively, the bill of materials can be submitted alongside your manuscript as supplementary material.}
+The complete bill of materials is provided in the project repository as \texttt{Hardware/sbcBOM.csv}. The reference designators in the bill of materials match the designators used in the schematic and PCB layout files. For readability, repeated passive components with the same package and supplier part number are grouped in the summary table below. The full editable CSV file should be used for ordering, assembly, and detailed component-level verification.
 
 \section{Bill of materials summary}
-\textit{Complete a separate row for each component of your hardware – all components associated with a cost should be listed and any empty rows should be deleted. }
+
 \vskip 0.2cm
 \tabulinesep=1ex
 \noindent
 \begin{tabu} to \linewidth {|X[1.1,1]|X|X[0.6,1]|X[0.8,1]|X|X|X[1.1,1]|}
-%\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\textbf{Designator} & \textbf{Component} & \textbf{Number} & \textbf{Cost per unit - currency} & \textbf{Total cost - currency} & \textbf{Source of materials} & \textbf{Material type} \\\hline
+\textbf{Designator} & \textbf{Component} & \textbf{Number} & \textbf{Cost per unit - currency} & \textbf{Total cost - currency} & \textbf{Source of materials} & \textbf{Material type} \\hline
 
-%Insert items here
-\textit{If possible, use the same designator here as you use in the associated design file. If that’s not possible, you will need to explain the relationship between the two.} & \textit{Name of Component 1} & \textit{Number of units} & \textit{Cost per unit and the currency used} & \textit{Total cost and the currency used} & \textit{If possible, include a direct link to a webpage where the component can be purchased } & \textit{Select from:
-\vskip 0.1cm
-%\begin{itemize}
--Metal
-\vskip 0.1cm
--Semi-conductor
-\vskip 0.1cm
--Ceramic
-\vskip 0.1cm
--Polymer
-\vskip 0.1cm
--Biomaterial
-\vskip 0.1cm
--Organic
-\vskip 0.1cm
--Inorganic
-\vskip 0.1cm
--Composite
-\vskip 0.1cm
--Nanomaterial
-\vskip 0.1cm
--Semiconductor
-\vskip 0.1cm
--Non-specific
-\vskip 0.1cm
--Other 
-%\end{itemize}
-} \\\hline
-\dots & \dots & \dots & \dots & \dots & \dots & \dots \\\hline
+C1--C47 & Ceramic capacitors, assorted values and footprints & 50 & See complete BOM & See complete BOM & JLCPCB/LCSC & Ceramic \\hline
 
-\dots & \dots & \dots & \dots & \dots & \dots & \dots \\\hline
+D1--D8 & Indicator LEDs, 0603 package & 8 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
 
-\dots & \dots & \dots & \dots & \dots & \dots & \dots \\\hline
-% Designator 3 & Name of Component 2 & Number of units & Cost per unit & Total cost & Source of materials & Material type \\\hline
-\end{tabu}\\
+J1, J5, J7, J9_1, J9_2 & Connectors including audio jack, pin headers, and USB-C connectors & 5 & See complete BOM & See complete BOM & JLCPCB/LCSC & Composite \\hline
+
+L2 & Surface-mount inductor & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Metal \\hline
+
+Q1_1--Q4_2 & Power MOSFETs in PowerFLAT package & 8 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+R1--R47 & Surface-mount resistors, assorted values and footprints & 52 & See complete BOM & See complete BOM & JLCPCB/LCSC & Ceramic \\hline
+
+S1--S4 & Surface-mount tactile switches & 4 & See complete BOM & See complete BOM & JLCPCB/LCSC & Composite \\hline
+
+U1 & microSD card connector & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Composite \\hline
+
+U2, U7 & W25Q128 SPI flash memory & 2 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+U3 & AZ1117 linear voltage regulator & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+U6 & RP2040 microcontroller & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+U8 & Allwinner F1C200s system-on-chip & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+U10 & ADP323 power-management regulator & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+U11 & Power-management or support IC & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+U14_1, U14_2 & STUSB1600A USB Type-C controller & 2 & See complete BOM & See complete BOM & JLCPCB/LCSC & Semiconductor \\hline
+
+Y1 & 12 MHz crystal oscillator / resonator & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Inorganic \\hline
+
+Y2 & 24 MHz crystal oscillator / resonator & 1 & See complete BOM & See complete BOM & JLCPCB/LCSC & Inorganic \\hline
+
+PCB & Custom printed circuit board & 1 & See fabrication quote & See fabrication quote & JLCPCB or equivalent PCB manufacturer & Composite \\hline
+
+Enclosure & 3D-printed top and bottom enclosure pieces & 2 & See fabrication quote & See fabrication quote & 3D printing service or local fabrication & Polymer \\hline
+
+\end{tabu}\
+
 \vskip 0.2cm
-%\end{tabular}
+
 \noindent
-\textit{You can use this space for any additional descriptions of the materials used.}
+The hardware is primarily assembled from commercially available surface-mount components selected for compatibility with low-cost PCB fabrication and assembly services. The complete bill of materials includes the manufacturer or supplier part numbers, datasheet links where available, footprints, reference designators, and JLCPCB/LCSC part numbers. Costs are intentionally reported through the editable BOM and fabrication quotations because component pricing and availability vary over time, particularly for semiconductor devices and PCB assembly services.
