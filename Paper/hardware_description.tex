@@ -1,10 +1,55 @@
 \section{Hardware description}
-% Describe the hardware, highlighting the customization rather than the steps of the procedure. Highlight how it differs/which advantage it offers over pre-existing methods. For example, how could this hardware: be compared to other hardware in terms of cost or ease of use, be used in the development of further designs in a particular area, and so on.
 
-% > Add 3-5 bulleted points to broadly explain to other researchers how the hardware could be potentially useful to them, for either standard or novel laboratory tasks, inside or outside of the original user community.
+The Simple SBC is a compact Linux-capable single-board computer designed as a 
+customizable foundation for research and educational projects. Unlike 
+commercial SBCs, which are typically designed as general-purpose computing 
+platforms, the Simple SBC is intended to serve as a starting point for 
+application-specific hardware development. The design integrates the minimum 
+set of components required to support a Linux operating system while reserving 
+a significant portion of the PCB area for application-specific circuitry.
+
+The board combines a Linux-capable microprocessor, memory, power management circuitry, 
+storage interfaces, and external communication interfaces onto a single PCB. 
+By integrating these functions directly into the design, researchers can avoid the need 
+for separate carrier boards or expansion modules commonly required when adapting commercial 
+SBCs to specialized applications. The resulting system reduces overall component count and 
+provides greater flexibility for hardware customization.
+
+A key feature of the design is the inclusion of a large prototyping and expansion region 
+intended for daughter-board integration. This area allows application-specific circuitry 
+to be incorporated directly into the system while maintaining access to Linux-based software 
+infrastructure. As a result, custom sensors, control electronics, communication interfaces, 
+or experimental hardware can be developed as part of a unified platform rather than as 
+external peripherals connected through standard expansion headers.
+
+The design is fully open source, with schematic and PCB design files provided to enable 
+modification and reuse. Researchers may adapt the board to alternative form factors, 
+remove unused peripherals, or integrate additional functionality directly into the base design. 
+This flexibility allows the platform to evolve alongside project requirements without requiring 
+a complete redesign of the Linux subsystem.
+
+Compared to commercial SBC platforms, the Simple SBC prioritizes customization and integration 
+over processing performance. While it does not seek to replace high-performance platforms 
+such as the Raspberry Pi, it provides a practical solution for applications where a Linux 
+operating system is required but where the size, cost, or fixed architecture of a commercial 
+board may be limiting factors.
+
+The hardware may be useful to researchers in the following ways:
 
 \begin{itemize}
-    \item The design includes a large space on the board for a daughter board to be installed. 
-    Any research application needing to run an indepent experiment can be done up to interate with the Linux Kernel. 
-    \item The PCB and Schematic files are available for editing so that it can modified to fit alternative form factors or application spaces.
+\item Provides a Linux-capable computing platform that can be directly integrated into 
+custom research hardware without requiring a separate commercial SBC.
+
+\item Includes a dedicated daughter-board region that simplifies the integration of sensors, 
+actuators, communication interfaces, and other application-specific electronics.
+
+\item Enables modification of the PCB layout and schematic files to support specialized form factors, 
+environmental constraints, or experimental requirements.
+
+\item Serves as a reference design for researchers interested in developing custom 
+embedded Linux systems without designing the complete hardware and software stack from scratch.
+
+\item Supports educational activities involving embedded Linux, hardware design, 
+and system integration by providing a fully open-source example platform.
+
 \end{itemize}
